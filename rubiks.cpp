@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-//#include <windows.h>
 #include <GL/glut.h>
 #include <cstring>
 
@@ -19,9 +18,10 @@ using namespace std;
 
 #define BUFFER_LENGTH 64
 
-GLfloat ambientlight[]={.1,.1,.1,1};
-GLfloat diffuselight[]={.5,.5,.5,1};
-GLfloat specularlight[]={.5,.5,.5,1};
+GLfloat ambientlight[]	= {0.2, 0.2, 0.2, 1.0};
+GLfloat diffuselight[]	= {0.8, 0.8, 0.8, 1.0};
+GLfloat specularlight[]	= {1.0, 1.0, 1.0, 1.0};
+GLfloat light_position[]	= {.5, .5, 0.0, 0.0};
 
 GLfloat cubeverts[]={
 	1,1,1,				// 0
@@ -165,18 +165,22 @@ void RenderScene( void )
 	glPushName(30);
 
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+	
 
 	glEnable(GL_LIGHTING);
 
 	glLightfv(GL_LIGHT0,GL_AMBIENT,ambientlight);
 	glLightfv(GL_LIGHT0,GL_DIFFUSE,diffuselight);
 	glLightfv(GL_LIGHT0,GL_SPECULAR,specularlight);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glEnable(GL_LIGHT0);
-
+	
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
-	glMaterialfv(GL_FRONT,GL_SPECULAR,specularlight);
-	glMateriali(GL_FRONT,GL_SHININESS,100);
+	glMaterialfv(GL_FRONT,GL_SPECULAR,specularlight);	
+	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	// Try Shadowing
 	glDisable(GL_DEPTH_TEST);
@@ -229,9 +233,7 @@ void RenderScene( void )
 	for(i=0;i<27;i++)
 	{
 		glPushMatrix();
-
 		glTranslatef(cubepos[i][0]*2,cubepos[i][2]*2,cubepos[i][1]*2);
-
 		glLoadName(i); // Selection buffer info
 		if(!cubeop[i])
 			DrawMiniCube(i,actioncube);
@@ -255,16 +257,13 @@ void RenderScene( void )
 	for(i=0;i<27;i++)
 	{
 		glPushMatrix();
-
 		glTranslatef(cubepos[i][0]*2,cubepos[i][2]*2,cubepos[i][1]*2);
-
 		glLoadName(i); // Selection buffer info
 		if(cubeop[i])
 			DrawMiniCube(i,actioncube);
 
 		glPopMatrix();
 	}
-
 	glutSwapBuffers();
 }
 
@@ -479,7 +478,7 @@ void DrawMiniCube(int cubeID, int selected)
 	if(actioncube==cubeID)
 	{
 		glColor3f(0,0,0);
-//		glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHTING);
 	}
 	else
 		glColor3f(0,0,0);
