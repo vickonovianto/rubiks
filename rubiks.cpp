@@ -21,7 +21,12 @@ using namespace std;
 GLfloat ambientlight[]	= {0.2, 0.2, 0.2, 1.0};
 GLfloat diffuselight[]	= {0.8, 0.8, 0.8, 1.0};
 GLfloat specularlight[]	= {1.0, 1.0, 1.0, 1.0};
-GLfloat light_position[]	= {.5, .5, 0.0, 0.0};
+GLfloat light_position[]	= {0.5, 0.5, 0.0, 0.0};
+
+GLfloat ambientlight2[]	= {1.0, 0.2, 0.2, 1.0};
+GLfloat diffuselight2[]	= {0.8, 0.8, 0.8, 1.0};
+GLfloat specularlight2[]	= {1.0, 0.0, 0.0, 1.0};
+GLfloat light_position2[]	= {-0.5, 0.5, 0.0, 0.0};
 
 GLfloat cubeverts[]={
 	1,1,1,				// 0
@@ -176,6 +181,13 @@ void RenderScene( void )
 	glLightfv(GL_LIGHT0,GL_SPECULAR,specularlight);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glEnable(GL_LIGHT0);
+
+	glLightfv(GL_LIGHT1,GL_AMBIENT,ambientlight2);
+	glLightfv(GL_LIGHT1,GL_DIFFUSE,diffuselight2);
+	glLightfv(GL_LIGHT1,GL_SPECULAR,specularlight2);
+	glLightfv(GL_LIGHT1, GL_POSITION, light_position2);
+	glEnable(GL_LIGHT1);
+
 	
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
